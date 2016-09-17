@@ -5,9 +5,16 @@ package com.example.t2viat00.guntherapp;
  */
 import java.util.Date;
 
+import android.content.Context;
+import android.view.View;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
+
 class ThreadJuttu extends Thread {
+
     public void run() {
         try{
+
             while(true){
                 String date = new Date().toString();
                 System.out.println(date + "GUNTHER TULE TAKAISIN!");
@@ -15,7 +22,7 @@ class ThreadJuttu extends Thread {
             }
         }
         catch(Exception e) {
-            System.out.print("thread interrupted \n");
+            System.out.print(e.getMessage());
         }
     }
 }

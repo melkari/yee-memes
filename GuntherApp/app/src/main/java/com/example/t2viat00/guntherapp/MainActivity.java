@@ -1,5 +1,6 @@
 package com.example.t2viat00.guntherapp;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,7 +8,10 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button startstopButton;
-    boolean state;
+    boolean state = false;
+    ThreadJuttu currentThread = new ThreadJuttu();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,18 +21,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     @Override
     public void onClick(View v) {
-        ThreadJuttu yee = new ThreadJuttu();
-        if(!state){
-            yee.start();
-            startstopButton.setText("Stop");
-            state = true;
+        try {
+            if(!state){
+                startstopButton.setText("Stop");
+                state = true;
+                ThreadJuttu newThread = new ThreadJuttu();
+                currentThread = newThread;
+                newThread.start();
+            }
+            else
+            {
+                startstopButton.setText("Start");
+                state = false;
+                currentThread.interrupt();
+            }
         }
-        else
-        {
-            yee.interrupt();
-            startstopButton.setText("Start");
-            state = false;
+        catch (Exception e) {
+            System.out.print(e.getMessage() + "\n");
         }
+
     }
 }
 
