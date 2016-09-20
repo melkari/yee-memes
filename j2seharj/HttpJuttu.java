@@ -11,8 +11,13 @@ class HttpJuttu extends Thread {
 	public void run() {
 		try {
 			URL myURL = new URL(url);
-			URLConnection myconn = myURL.openConnection();
-			myconn.connect();
+			URLConnection yc = myURL.openConnection();
+			BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+			String inputLine;
+			while((inputLine = in.readLine()) != null) {
+				System.out.println(inputLine);
+			}
+			in.close();
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
