@@ -7,7 +7,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements URLreader.CommInterface{
+    URLreader myURLr = new URLreader(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,21 +18,39 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button readURL = (Button) findViewById(R.id.urlbutton);
-        final EditText line = (EditText) findViewById(R.id.editText);
+
         readURL.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View arg0) {
-                try {
-                    String url = line.getText().toString();
-                    URLreader myURLr = new URLreader(url);
-                    TextView urlTextView = (TextView) findViewById(R.id.textView);
-                    myURLr.start();
-                    myURLr.getURLcontent();
-                    for(String line : myURLr.getURLcontent()) {
-                        urlTextView.setText(urlTextView.getText() + line);
-                    }
-                }catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
+                aloita();
+            }
+        });
+    }
+
+    public void aloita()
+    {
+        try {
+            final EditText line = (EditText) findViewById(R.id.editText);
+            String url = line.getText().toString();
+            myURLr.getURLdata(url);
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    protected void updateUI()
+    {
+        TextView urlTextView = (TextView) findViewById(R.id.textView);
+        for(String line : myURLr.getURLcontent()) {
+            String textviewtext = urlTextView.getText().toString() + line;
+            urlTextView.setText(textviewtext);
+        }
+    }
+
+    @Override
+    public void urlContentAvailable() {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                updateUI();
             }
         });
     }
