@@ -63,6 +63,7 @@ public class WeatherEngine implements HTTPGetThread.OnRequestDoneInterface
         Log.d("LABRA dataa tulee: ", data);
         try
         {
+            Log.d("WEATHER", data);
             // No proper error handling here:
             Map<String, Object> parsed = JsonUtils.jsonToMap(new JSONObject(data));
             Map<String, Object> mainElement = (Map) parsed.get("main");

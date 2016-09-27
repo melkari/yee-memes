@@ -36,7 +36,7 @@ public class HTTPGetThread extends Thread{
             in.close();
             callback.onRequestDone(httpdata);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

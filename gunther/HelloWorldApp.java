@@ -11,12 +11,10 @@ public class HelloWorldApp {
 				{
 					Thread1 yee = new Thread1();
 					currentThread = yee;
-					Thread.sleep(1000);
 					yee.start();
 				}
 				else if(komento.equals("stop"))
 				{
-					Thread.sleep(1000);
 					currentThread.interrupt();				
 				}			  
 			} 
