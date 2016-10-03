@@ -7,30 +7,29 @@ public class ThreadThing extends Thread {
 		public void reportStatus(String progress);
 	}
 
-	StatusInterface observer;
+	StatusInterface statusInterface;
 	public ThreadThing(StatusInterface cb) {
-		this.observer = cb;
+		this.statusInterface = cb;
 	}
 	
 	@Override
 	public void run() {
 		try {
-			for(int i = 0; i <100; i+=10){
+			long threadId = Thread.currentThread().getId();
+			String date = new Date().toString();
+			for(int i = 10; i <100; i+=10){
 				Thread.sleep(3000);
-				String date = new Date().toString();
-				progress = date + ": " + "On Progress: " + i;
-				observer.reportStatus(progress);
+				date = new Date().toString();
+				progress = date + ": Thread ID: " + threadId + " On Progress: " + i + "%";
+				statusInterface.reportStatus(progress);
 			}
+			Thread.sleep(3000);
+			date = new Date().toString();
+			progress = date + ": Thread ID: " + threadId + " Complete.";
+			statusInterface.reportStatus(progress);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public String getStatus() {
-		return progress;
-	}
-	
-	public void startThread(String givenname) {
-		//what the fugs am i doing
-	}
 }

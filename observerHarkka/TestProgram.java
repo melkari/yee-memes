@@ -1,12 +1,22 @@
 import java.util.Scanner;
 
 public class TestProgram implements ThreadThing.StatusInterface{
-	static ThreadThing threadthing = new ThreadThing(this);
+	
+	public void startThreads() {
+		ThreadThing threadthing = new ThreadThing(this);
+		threadthing.start();
+	}
+	
 	public static void main(String[] args) {
-		try {
-			threadthing.start();
-		} catch(Exception e) {
-			
+		TestProgram testProgram = new TestProgram();
+		System.out.println("'s' to start a new thread.");
+		Scanner sc = new Scanner(System.in);
+		String cmd;
+		while(true) {
+			cmd = sc.nextLine();
+			if(cmd.equals("s")) {
+				testProgram.startThreads();
+			}
 		}
 	}
 	
