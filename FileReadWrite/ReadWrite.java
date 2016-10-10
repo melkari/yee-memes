@@ -23,20 +23,21 @@ public class ReadWrite extends Thread {
 	public void run() {
 		try {
 			if(txt != null) {
-				Files.write(Paths.get("K:/yee/yee-memes/FileReadWrite/malli.txt"), txt.getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get("malli.txt"), txt.getBytes(), StandardOpenOption.APPEND);
 			} else {
-				for(String line : Files.readAllLines(Paths.get("K:/yee/yee-memes/FileReadWrite/malli.txt"))) {
+				for(String line : Files.readAllLines(Paths.get("malli.txt"))) {
 					filecontent.add(line);
 				}
 				readerInterface.readFile(filecontent);
+				System.out.println("Gibe new text: ");
 			}
 		} catch (IOException e) {
 			System.out.println(e);
-		}	
+		}
 	}
 	
 	public void setText(String giventxt) {
-		txt = giventxt;
+		txt = "\n" + giventxt;
 		start();
 	}
 }
