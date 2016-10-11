@@ -25,7 +25,6 @@ public class URLreader extends Thread {
     @Override
     public void run() {
         try {
-
             URL myURL = new URL(url);
             URLConnection yc = myURL.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
