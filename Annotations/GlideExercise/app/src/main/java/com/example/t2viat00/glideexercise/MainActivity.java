@@ -6,8 +6,10 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+@EActivity
 public class MainActivity extends AppCompatActivity {
 
     @ViewById
@@ -16,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Glide.with(this).load("https://github.com/melkari/yee-memes/blob/master/tbfDhAj.png?raw=true").into(imageView);
+        Glide.with(this).load("http://i.imgur.com/UJ8ytFD.jpg").into(imageView);
     }
 
 
