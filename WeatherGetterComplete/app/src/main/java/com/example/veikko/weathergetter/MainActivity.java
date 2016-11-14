@@ -11,7 +11,18 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, WeatherEngine.WeatherDataAvailableInterface {
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+
+@EActivity
+public class MainActivity extends AppCompatActivity implements WeatherEngine.WeatherDataAvailableInterface {
 
     WeatherEngine engine = new WeatherEngine(this);
 
@@ -19,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.button).setOnClickListener(this);
     }
 
     @Override
@@ -44,12 +54,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View v) {
+    @Click
+    public void button() {
         EditText editor = (EditText) findViewById(R.id.editText);
-        engine.getWeatherData(editor.getText().toString());
+        doTheThing(editor.getText().toString());
     }
 
+    @Background
+    public void doTheThing(String city)
+    {
+        engine.httpGet(city);
+    }
+
+    @UiThread
     protected void updateUI()
     {
         TextView temperatureTextView = (TextView) findViewById(R.id.textView);
@@ -62,11 +79,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void weatherDataAvailable() {
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                updateUI();
-            }
-        });
+        updateUI();
     }
 }

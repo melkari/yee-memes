@@ -2,8 +2,16 @@ package com.example.veikko.weathergetter;
 
 import android.util.Log;
 
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.EBean;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
@@ -11,8 +19,9 @@ import java.util.Objects;
 /**
  * Created by veikko on 14.9.15.
  */
-public class WeatherEngine implements HTTPGetThread.OnRequestDoneInterface
+public class WeatherEngine
 {
+    private String httpdata = "";
 
     // This interface is used to report data back to UI
     public interface WeatherDataAvailableInterface
@@ -43,28 +52,35 @@ public class WeatherEngine implements HTTPGetThread.OnRequestDoneInterface
     }
 
     WeatherDataAvailableInterface uiCallback;
-
     public WeatherEngine(WeatherDataAvailableInterface callbackInterface)
     {
         this.uiCallback = callbackInterface;
     }
 
-    public void getWeatherData(String city)
+    public void httpGet(String city)
     {
-        String url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=65dbec3aae5e5bf9000c7a956c8b76f6";
-        HTTPGetThread getter = new HTTPGetThread(url, this);
-        getter.start();
+        try {
+            String url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=65dbec3aae5e5bf9000c7a956c8b76f6";
+            URL myURL = new URL(url);
+            URLConnection yc = myURL.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+            String inputLine;
+            while((inputLine = in.readLine()) != null) {
+                httpdata = httpdata + inputLine;
+            }
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        onRequestDone(httpdata);
     }
 
 
-    @Override
+
     public void onRequestDone(String data)
     {
-        Log.d("LABRA dataa tulee: ", data);
         try
         {
-            Log.d("WEATHER", data);
-            // No proper error handling here:
             Map<String, Object> parsed = JsonUtils.jsonToMap(new JSONObject(data));
             Map<String, Object> mainElement = (Map) parsed.get("main");
             double temp = (double)mainElement.get("temp");
